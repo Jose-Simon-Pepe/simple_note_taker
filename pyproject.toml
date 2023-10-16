@@ -17,3 +17,6 @@ pytest-watch = "^4.2.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+markers = ["integration: This is a integration test"]

@@ -16,18 +16,18 @@ class NoteTaker:
 
     def create_note(self,name:str):
         template = r"/home/peace/note_template.md"
-        args = sys.argv[1:]
+        args = name
 
         # Este script crea una nota dentro del standard zettelk
-        title_words = [word for word in args if not word.startswith("-")]
+        title_words = [word for word in args.split() if not word.startswith("-")]
         tags = [word.replace("-", "#") for word in args if word.startswith("-")]
         print(tags)
     
         title = '_'.join(map(str, title_words))
     
-        target = "/home/peace/notes/study/"+title+".md"
+        target = self._notes_path+title+".md"
     
-        if len(sys.argv[1:])==0:
+        if len(name)==0:
             target = os.getcwd()+"/nonamednote.md"
     
         print("target is :",target)
@@ -53,5 +53,5 @@ class NoteTaker:
         
         with open(target, "w") as file:
             file.writelines(lines)
-        if not "#noedit" in tags:
-            os.system("nvim "+target)
+#        if not "#noedit" in tags:
+#            os.system("nvim "+target)
