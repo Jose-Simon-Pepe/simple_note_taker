@@ -1,12 +1,18 @@
 import os,shutil
 import sys
 import datetime
+from simple_note_taker.src.infra.editor import EDITOR
 
 class NoteTaker:
+
 
     def __init__(self,note_path:str,note_templ:str):
         self._notes_path = note_path
         self._notes_templ = note_templ
+        self.editor:EDITOR = None
+
+    def set_editor(self,editor:EDITOR):
+        self.editor = editor
 
     def notes_path(self):
         return self._notes_path
@@ -34,8 +40,14 @@ class NoteTaker:
         
         shutil.copyfile(template, target)
         self.add_tags(target,tags)
+        if self.editor != None:
+            self.open_editor(target)
+
 #        if not "#noedit" in tags:
 #            os.system("nvim "+target)
+
+    def open_editor(self,target:str):
+        self.editor.open(target)
 
     def add_tags(self,target:str,tags:list):
         if len(tags)>0:
