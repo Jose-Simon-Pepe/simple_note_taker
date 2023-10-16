@@ -30,3 +30,4 @@
   - Allow github authentification, or leave it for user
 - Create git backup daemon service with cron: DONE
   - Choose backup frequency
+- Create installer and setup docu
