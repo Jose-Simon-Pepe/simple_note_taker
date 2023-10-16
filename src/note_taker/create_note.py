@@ -15,7 +15,7 @@ class NoteTaker:
         return self._notes_templ
 
     def create_note(self,name:str):
-        template = r"/home/peace/note_template.md"
+        template = self._notes_templ
         args = name
 
         # Este script crea una nota dentro del standard zettelk
@@ -33,6 +33,10 @@ class NoteTaker:
         print("target is :",target)
         
         shutil.copyfile(template, target)
+#        if not "#noedit" in tags:
+#            os.system("nvim "+target)
+
+    def add_meta(self,target:str):
         new_first_line = "# "+" ".join(map(str,title_words))
         tags_end_line = " ".join(map(str,[tag for tag in tags if not tag=="#noedit"]))
         
@@ -53,5 +57,3 @@ class NoteTaker:
         
         with open(target, "w") as file:
             file.writelines(lines)
-#        if not "#noedit" in tags:
-#            os.system("nvim "+target)
