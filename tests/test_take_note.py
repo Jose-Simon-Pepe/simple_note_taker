@@ -27,3 +27,14 @@ def test_note_taker_should_get_note_template_from_path():
     nt.create_note(note_name)
     assert filecmp.cmp(os.getcwd()+"/tests/generated_by_template.md",os.getcwd()+"/tests/template_demo.md")
 
+
+@pytest.mark.integration
+def test_note_taker_should_allow_set_tags_from_note_name_using_middle_dash():
+    nt = NoteTaker(os.getcwd()+"/tests/",os.getcwd()+"/tests/template_demo.md")
+    note_name = "note with tags -this_is_a_tag"
+    nt.create_note(note_name)
+    with open(os.getcwd()+"/tests/note_with_tags.md",mode='r') as f:
+        last_line = f.readlines()[len(f.readlines())-1]
+        assert last_line=="#this_is_a_tag"
+    
+

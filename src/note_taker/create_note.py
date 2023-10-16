@@ -20,7 +20,7 @@ class NoteTaker:
 
         # Este script crea una nota dentro del standard zettelk
         title_words = [word for word in args.split() if not word.startswith("-")]
-        tags = [word.replace("-", "#") for word in args if word.startswith("-")]
+        tags = [word.replace("-", "#") for word in args.split() if word.startswith("-")]
         print(tags)
     
         title = '_'.join(map(str, title_words))
@@ -33,8 +33,18 @@ class NoteTaker:
         print("target is :",target)
         
         shutil.copyfile(template, target)
+        self.add_tags(target,tags)
 #        if not "#noedit" in tags:
 #            os.system("nvim "+target)
+
+    def add_tags(self,target:str,tags:list):
+        if len(tags)>0:
+            tags_end_line = " ".join(map(str,[tag for tag in tags if not tag=="#noedit"]))
+            with open(target, "r") as file:
+                lines = file.readlines()
+            lines[len(lines)-1] = tags_end_line
+            with open(target, "w") as file:
+                file.writelines(lines)
 
     def add_meta(self,target:str):
         new_first_line = "# "+" ".join(map(str,title_words))
