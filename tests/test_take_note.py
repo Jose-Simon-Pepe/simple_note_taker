@@ -4,6 +4,9 @@ import filecmp
 import os
 from simple_note_taker.src.note_taker.create_note import NoteTaker
 
+# TODO: Implementar repository o capa de persistencia para create_note
+# TODO: Si almaceno la nota en proceso como una lista de lineas entonces puedo testear mejor y modularizar mas el codigo
+
 notes_path = "/home/peace/notes/"
 notes_templ = os.getcwd()+"/tests/template_demo.md"
 
@@ -47,4 +50,27 @@ def test_note_taker_should_open_editor_for_edit_note():
     nt.create_note(note_name)
     assert editor.was_called 
  
+def test_note_taker_should_generate_a_unique_id_for_note():
+    """Genera IDS basados en el contenido"""    
+    nt = NoteTaker(os.getcwd()+"/tests/",os.getcwd()+"/tests/template_demo.md")
+    note_name = "note with id -i_have_id"
+    nt.create_note("note with id -i_have_id")
+    id1= nt.id()
+    nt.create_note("another note with different id -i_have_id")
+    id2=nt.id()
+    assert id1 != id2
 
+#@pytest.mark.integration
+#def test_note_taker_should_print_metadata_as_note_header():
+#    nt = NoteTaker(os.getcwd()+"/tests/",os.getcwd()+"/tests/template_demo.md")
+#    note_name = "note with header -i_have_a_header"
+#    nt.create_note(note_name).title().id().date().filename()
+#    with open(os.getcwd()+"/tests/note_with_header.md",mode='r') as f:
+#        ## assertar que los primeros tres lienas sean el titulo el id la fecha y el filename
+#        lines = f.readlines()
+#        assert lines[0]=="# note with header"
+#        assert lines[1]=="- ID:"
+#        assert lines[2]=="- DATE: "+time()
+#        assert lines[3]=="- FILENAME: "+os.getcwd()+"/tests/note_with_header.md"
+    
+    

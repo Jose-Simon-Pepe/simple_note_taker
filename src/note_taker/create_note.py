@@ -11,6 +11,10 @@ class NoteTaker:
         self._notes_templ = note_templ
         self._tags = list()
         self.editor:EDITOR = None
+        self._id:int = 0
+
+    def id(self):
+        return self._id
 
     def set_editor(self,editor:EDITOR):
         self.editor = editor
@@ -30,6 +34,7 @@ class NoteTaker:
         print("target is :",target)
         shutil.copyfile(self._notes_templ, target)
         self.add_tags(target,self._tags)
+        self.generate_id(name)
         if self.editor != None:
             self.open_editor(target)
 
@@ -38,6 +43,9 @@ class NoteTaker:
 
     def open_editor(self,target:str):
         self.editor.open(target)
+
+    def generate_id(self,name:str):
+        self._id = hash(name)
 
     def add_tags(self,target:str,tags:list):
         if len(tags)>0:
