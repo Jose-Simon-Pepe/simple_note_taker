@@ -9,6 +9,7 @@ class NoteTaker:
     def __init__(self,note_path:str,note_templ:str):
         self._notes_path = note_path
         self._notes_templ = note_templ
+        self._tags = list()
         self.editor:EDITOR = None
 
     def set_editor(self,editor:EDITOR):
@@ -21,30 +22,19 @@ class NoteTaker:
         return self._notes_templ
 
     def create_note(self,name:str):
-        template = self._notes_templ
-        args = name
-
         # Este script crea una nota dentro del standard zettelk
-        title_words = [word for word in args.split() if not word.startswith("-")]
-        tags = [word.replace("-", "#") for word in args.split() if word.startswith("-")]
-        print(tags)
-    
+        title_words = [word for word in name.split() if not word.startswith("-")]
+        self.get_tags(name)
         title = '_'.join(map(str, title_words))
-    
         target = self._notes_path+title+".md"
-    
-        if len(name)==0:
-            target = os.getcwd()+"/nonamednote.md"
-    
         print("target is :",target)
-        
-        shutil.copyfile(template, target)
-        self.add_tags(target,tags)
+        shutil.copyfile(self._notes_templ, target)
+        self.add_tags(target,self._tags)
         if self.editor != None:
             self.open_editor(target)
 
-#        if not "#noedit" in tags:
-#            os.system("nvim "+target)
+    def get_tags(self,name:str):
+        self._tags = [word.replace("-", "#") for word in name.split() if word.startswith("-")]
 
     def open_editor(self,target:str):
         self.editor.open(target)
