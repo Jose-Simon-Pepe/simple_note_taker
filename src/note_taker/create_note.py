@@ -35,6 +35,7 @@ class NoteTaker:
         shutil.copyfile(self._notes_templ, target)
         self.add_tags(target,self._tags)
         self.generate_id(name)
+        self.print_id(target)
         self.print_title(name,target)
         if self.editor != None:
             self.open_editor(target)
@@ -49,6 +50,13 @@ class NoteTaker:
         with open(target,mode='w') as f:
             f.writelines(new_lines)
         
+    def print_id(self,target:str):
+        new_lines = list()
+        with open(target,mode='r') as f:
+            existing = f.readlines()
+        with open(target,mode='w') as f:
+            existing.insert(0,"- ID: "+str(self._id)+"\n")
+            f.writelines(existing)
 
     def get_tags(self,name:str):
         self._tags = [word.replace("-", "#") for word in name.split() if word.startswith("-")]

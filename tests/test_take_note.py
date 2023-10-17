@@ -73,3 +73,11 @@ def test_note_taker_should_print_note_name_as_a_header_in_first_line____():
     with open(os.getcwd()+"/tests/note_with_title.md") as f:
         assert f.readlines()[0] == "# note with title\n"
 
+
+@pytest.mark.integration    
+def test_note_taker_should_print_note_id_as_second_line():
+    nt = NoteTaker(os.getcwd()+"/tests/",os.getcwd()+"/tests/template_demo.md")
+    note_name = "note with id impressed -i_have_id"
+    nt.create_note(note_name)
+    with open(os.getcwd()+"/tests/note_with_title.md") as f:
+        assert f.readlines()[1].startswith("- ID:")
