@@ -35,8 +35,20 @@ class NoteTaker:
         shutil.copyfile(self._notes_templ, target)
         self.add_tags(target,self._tags)
         self.generate_id(name)
+        self.print_title(name,target)
         if self.editor != None:
             self.open_editor(target)
+
+    def print_title(self,name:str,target:str):
+        name =[word for word in name.split() if not word.startswith("-")]
+        title="# "+" ".join(name)+"\n"   
+        new_lines = list()
+        new_lines.append(title)
+        with open(target,mode='r') as f:
+            new_lines.extend(f.readlines())
+        with open(target,mode='w') as f:
+            f.writelines(new_lines)
+        
 
     def get_tags(self,name:str):
         self._tags = [word.replace("-", "#") for word in name.split() if word.startswith("-")]
