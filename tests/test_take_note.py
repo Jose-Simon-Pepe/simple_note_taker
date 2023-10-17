@@ -1,5 +1,5 @@
 import pytest
-from simple_note_taker.src.infra.editor import EDITOR
+from simple_note_taker.tests.helpers.spy_editor import Editor
 import filecmp
 import os
 from simple_note_taker.src.note_taker.create_note import NoteTaker
@@ -36,15 +36,7 @@ def test_note_taker_should_allow_set_tags_from_note_name_using_middle_dash():
     with open(os.getcwd()+"/tests/note_with_tags.md",mode='r') as f:
         last_line = f.readlines()[len(f.readlines())-1]
         assert last_line=="#this_is_a_tag"
-
-class Editor(EDITOR):
-
-    was_called:bool = False
     
-    def open(self,target:str):
-        self.was_called = True
-    
-
 # Infra should instantiate editor
 @pytest.mark.integration
 def test_note_taker_should_open_editor_for_edit_note():
