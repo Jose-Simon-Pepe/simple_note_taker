@@ -7,8 +7,17 @@ from simple_note_taker.src.note_taker.create_note import NoteTaker
 # TODO: Implementar repository o capa de persistencia para create_note
 # TODO: Si almaceno la nota en proceso como una lista de lineas entonces puedo testear mejor y modularizar mas el codigo
 
-notes_path = "/home/peace/notes/"
+
+notes_path = os.getcwd()+"/tests/notes/"
 notes_templ = os.getcwd()+"/tests/template_demo.md"
+
+@pytest.fixture(autouse=True)
+def remove_test_notes():
+    if os.path.isdir(notes_path):
+        os.system("rm -rf "+notes_path)
+    os.mkdir(notes_path)
+    yield
+    os.system("rm -rf "+notes_path)
 
 def test_note_taker_should_exist_by_the_note_folder_paths_and_a_template_path():
     nt = NoteTaker(notes_path, notes_templ)
@@ -34,10 +43,10 @@ def test_note_taker_should_create_a_note_from_a_string_in_path_with_backslash():
 
 @pytest.mark.integration
 def test_note_taker_should_allow_set_tags_from_note_name_using_middle_dash():
-    nt = NoteTaker(os.getcwd()+"/tests/",os.getcwd()+"/tests/template_demo.md")
+    nt = NoteTaker(notes_path,notes_templ)
     note_name = "note with tags -this_is_a_tag"
     nt.create_note(note_name)
-    with open(os.getcwd()+"/tests/note_with_tags.md",mode='r') as f:
+    with open(notes_path+"note_with_tags.md",mode='r') as f:
         last_line = f.readlines()[len(f.readlines())-1]
         assert last_line=="#this_is_a_tag"
     
@@ -45,7 +54,7 @@ def test_note_taker_should_allow_set_tags_from_note_name_using_middle_dash():
 @pytest.mark.integration
 def test_note_taker_should_open_editor_for_edit_note():
     editor = Editor()
-    nt = NoteTaker(os.getcwd()+"/tests/",os.getcwd()+"/tests/template_demo.md")
+    nt = NoteTaker(notes_path,notes_templ)
     nt.set_editor(editor)
     note_name = "edited note with my editor -this_is_great"
     nt.create_note(note_name)
@@ -53,7 +62,7 @@ def test_note_taker_should_open_editor_for_edit_note():
  
 def test_note_taker_should_generate_a_unique_id_for_note():
     """Genera IDS basados en el contenido"""    
-    nt = NoteTaker(os.getcwd()+"/tests/",os.getcwd()+"/tests/template_demo.md")
+    nt = NoteTaker(notes_path,notes_templ)
     note_name = "note with id -i_have_id"
     nt.create_note("note with id -i_have_id")
     id1= nt.id()
