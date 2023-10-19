@@ -1,6 +1,6 @@
 import pytest
 import os
-from simple_note_taker.src.infra.editor_nvim import Nvim
+from simple_note_taker.src.infra.adapters.editor_nvim import Nvim
 from simple_note_taker.src.note_taker.create_note import NoteTaker
 
 notes_path = "/home/peace/notes/"

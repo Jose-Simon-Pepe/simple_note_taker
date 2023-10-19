@@ -1,4 +1,4 @@
-from simple_note_taker.src.infra.editor import EDITOR
+from simple_note_taker.src.infra.ports.editor import EDITOR
 class Editor(EDITOR):
 
     was_called:bool = False

@@ -1,8 +1,8 @@
 import os,shutil
-from simple_note_taker.src.infra.repo_notes import RepoNotes
+from simple_note_taker.src.infra.ports.repo_notes import RepoNotes
 import sys
 import datetime
-from simple_note_taker.src.infra.editor import EDITOR
+from simple_note_taker.src.infra.ports.editor import EDITOR
 
 class NoteTaker:
 
