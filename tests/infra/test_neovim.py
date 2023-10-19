@@ -6,6 +6,14 @@ from simple_note_taker.src.note_taker.create_note import NoteTaker
 notes_path = "/home/peace/notes/"
 notes_templ = os.getcwd()+"/tests/template_demo.md"
 
+@pytest.fixture(autouse=True)
+def remove_test_notes():
+    if os.path.isdir(notes_path):
+        os.system("rm -rf "+notes_path)
+    os.mkdir(notes_path)
+    yield
+    os.system("rm -rf "+notes_path)
+
 @pytest.mark.integration
 def test_app_should_open_neovim():
     nt = NoteTaker(notes_path,notes_templ)

@@ -1,8 +1,9 @@
 import pytest
+from simple_note_taker.src.domain.note import Note
 from simple_note_taker.tests.helpers.spy_editor import Editor
 import filecmp
 import os
-from simple_note_taker.src.note_taker.create_note import NoteTaker
+from simple_note_taker.src.note_taker.create_note import NoteTaker, DuplicatedNoteError
 
 # TODO: Implementar repository o capa de persistencia para create_note
 # TODO: Si almaceno la nota en proceso como una lista de lineas entonces puedo testear mejor y modularizar mas el codigo
@@ -10,7 +11,7 @@ from simple_note_taker.src.note_taker.create_note import NoteTaker
 
 notes_path = os.getcwd()+"/tests/notes/"
 notes_templ = os.getcwd()+"/tests/template_demo.md"
-
+#eliminar duplicacion de fixture entre testeos
 @pytest.fixture(autouse=True)
 def remove_test_notes():
     if os.path.isdir(notes_path):
@@ -76,17 +77,40 @@ def test_note_taker_should_generate_a_unique_id_for_note():
 #        assert lines[3]=="- FILENAME: "+os.getcwd()+"/tests/note_with_header.md"
 @pytest.mark.integration    
 def test_note_taker_should_print_note_name_as_a_header_in_first_line____():
-    nt = NoteTaker(os.getcwd()+"/tests/",os.getcwd()+"/tests/template_demo.md")
+    nt = NoteTaker(notes_path,notes_templ)
     note_name = "note with id -i_have_id"
     nt.create_note("note with title -i_have_title")
-    with open(os.getcwd()+"/tests/note_with_title.md") as f:
+    with open(notes_path+"note_with_title.md") as f:
         assert f.readlines()[0] == "# note with title\n"
 
 
 @pytest.mark.integration    
 def test_note_taker_should_print_note_id_as_second_line():
-    nt = NoteTaker(os.getcwd()+"/tests/",os.getcwd()+"/tests/template_demo.md")
+    nt = NoteTaker(notes_path,notes_templ)
     note_name = "note with id impressed -i_have_id"
     nt.create_note(note_name)
-    with open(os.getcwd()+"/tests/note_with_title.md") as f:
+    with open(notes_path+"note_with_id_impressed.md") as f:
         assert f.readlines()[1].startswith("- ID:")
+
+
+class InMemoRepo():
+
+    def __init__(self):
+        self._all = list()
+
+    def save(self,note_dto):
+        self._all.append(note_dto)
+
+    def get_all(self):
+        return self._all
+
+def test_note_should_never_be_repitted():
+    in_memo_repo = InMemoRepo()
+    nt = NoteTaker(notes_path,notes_templ).set_repo(in_memo_repo)
+    with pytest.raises(DuplicatedNoteError):
+        nt.create_note("")
+        nt.create_note("")
+        assert len(in_memo_repo.get_all()) == 1
+
+#TODO: define NoteDTO for persistence and use it in service note taker
+#TODO: desacouple note taker of note modification

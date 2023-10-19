@@ -1,4 +1,5 @@
 import os,shutil
+from simple_note_taker.src.infra.repo_notes import RepoNotes
 import sys
 import datetime
 from simple_note_taker.src.infra.editor import EDITOR
@@ -12,6 +13,11 @@ class NoteTaker:
         self._tags = list()
         self.editor:EDITOR = None
         self._id:int = 0
+        self._repo = None
+
+    def set_repo(self,repo:RepoNotes):
+        self._repo = repo
+        return self
 
     def id(self):
         return self._id
@@ -27,18 +33,26 @@ class NoteTaker:
 
     def create_note(self,name:str):
         # Este script crea una nota dentro del standard zettelk
+        self.generate_id(name)
         title_words = [word for word in name.split() if not word.startswith("-")]
         self.get_tags(name)
         title = '_'.join(map(str, title_words))
         target = self._notes_path+title+".md"
+        self._prevent_duplicated_notes(target)
         print("target is :",target)
         shutil.copyfile(self._notes_templ, target)
         self.add_tags(target,self._tags)
-        self.generate_id(name)
         self.print_id(target)
         self.print_title(name,target)
+        if self._repo!= None:
+            self._repo.save("")
         if self.editor != None:
             self.open_editor(target)
+
+    def _prevent_duplicated_notes(self,target:str):
+        if os.path.isfile(target):
+            raise DuplicatedNoteError()
+        
 
     def print_title(self,name:str,target:str):
         name =[word for word in name.split() if not word.startswith("-")]
@@ -97,3 +111,6 @@ class NoteTaker:
         
         with open(target, "w") as file:
             file.writelines(lines)
+
+class DuplicatedNoteError(BaseException):
+    pass

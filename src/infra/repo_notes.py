@@ -1,3 +1,4 @@
+from simple_note_taker.src.domain.note import Note
 """
 Repo interface for CrUD notes
 Entity: Note
