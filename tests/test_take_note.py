@@ -12,6 +12,8 @@ from simple_note_taker.src.note_taker.create_note import NoteTaker, DuplicatedNo
 # TODO: define NoteDTO for persistence and use it in service note taker
 # TODO: desacouple note taker of note modification
 
+# TODO: Reemplazar os lib por repository e implementar un adaptador de repo mediante os lib
+
 
 notes_path = os.getcwd()+"/tests/notes/"
 notes_templ = os.getcwd()+"/tests/template_demo.md"
@@ -50,7 +52,10 @@ class TestNoteTaker:
     def test_note_taker_should_create_a_note_from_a_string_in_path_with_backslash(self,nt):
         note_name = "this is an empty test note"
         note_expected = notes_path+"this_is_an_empty_test_note.md"
+        repo = InMemoRepo()
+        nt.set_repo(repo)
         nt.create_note(note_name)
+        assert repo.get_all()[0].note() == note_name
         assert os.path.isfile(note_expected)
     
     @pytest.mark.integration

@@ -1,4 +1,5 @@
 import os,shutil
+from simple_note_taker.src.domain.note import Note
 from simple_note_taker.src.infra.ports.repo_notes import RepoNotes
 import sys
 import datetime
@@ -45,7 +46,7 @@ class NoteTaker:
         self.print_id(target)
         self.print_title(name,target)
         if self._repo!= None:
-            self._repo.save("")
+            self._repo.save(Note(name))
         if self.editor != None:
             self.open_editor(target)
 
