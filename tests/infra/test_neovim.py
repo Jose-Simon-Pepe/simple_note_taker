@@ -3,7 +3,8 @@ import os
 from simple_note_taker.src.infra.adapters.editor_nvim import Nvim
 from simple_note_taker.src.note_taker.create_note import NoteTaker
 
-notes_path = "/home/peace/notes/"
+
+notes_path = os.getcwd()+"/tests/notes/"
 notes_templ = os.getcwd()+"/tests/template_demo.md"
 
 @pytest.fixture(autouse=True)
