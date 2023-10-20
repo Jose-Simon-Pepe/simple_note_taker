@@ -1,5 +1,20 @@
 # Simple Note Taker
 
+## What is this?
+
+- A SIMPLE note taker for you to collect your new necessities. 
+
+Simple because it is designed to be used easily and quickly, in addition to assessing availability.
+
+The insight behind this is that, if we improve our capability at taking records, in a usable and maintainable way, we can improve our daily's inputs management, hence we are more capable of effectively carrying out medium to long-term plans and projects.
+
+## Use cases
+
+- Get a "Collector" component in your inbox system
+- Take study notes (specially zettelkasten-like notes)
+- Check what study pending items you have to study
+- ...
+
 ## Requeriments:
 
 - To define where you want to save all your notes (Simple Taker is gonna create a git repo up on it)
