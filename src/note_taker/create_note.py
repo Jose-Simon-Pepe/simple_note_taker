@@ -24,7 +24,7 @@ class NoteTaker:
         return self._id
 
     def set_editor(self,editor:EDITOR):
-        self.editor = editor
+        self.editor = editor 
 
     def notes_path(self):
         return self._notes_path
@@ -32,8 +32,14 @@ class NoteTaker:
     def notes_templ(self):
         return self._notes_templ
 
+
+    def _verify_unicity(self,name:str):
+        if self._repo.exists(name):
+            raise DuplicatedNoteError("Duplicated note")
+
     def create_note(self,name:str):
-        # Este script crea una nota dentro del standard zettelk
+        """ Este script crea una nota dentro del standard zettelk """
+        self._verify_unicity(name)
         self.generate_id(name)
         title_words = [word for word in name.split() if not word.startswith("-")]
         self.get_tags(name)
@@ -41,12 +47,9 @@ class NoteTaker:
         target = self._notes_path+title+".md"
         self._prevent_duplicated_notes(target)
         print("target is :",target)
-        shutil.copyfile(self._notes_templ, target)
-        self.add_tags(target,self._tags)
-        self.print_id(target)
-        self.print_title(name,target)
+        self._repo.create_from_templ(self._notes_templ,target)
         if self._repo!= None:
-            self._repo.save(Note(name))
+            self._repo.save(Note("# "+" ".join(title_words)).set_tags(self._tags))
         if self.editor != None:
             self.open_editor(target)
 
@@ -82,17 +85,18 @@ class NoteTaker:
     def generate_id(self,name:str):
         self._id = hash(name)
 
-    def add_tags(self,target:str,tags:list):
-        if len(tags)>0:
-            tags_end_line = " ".join(map(str,[tag for tag in tags if not tag=="#noedit"]))
-            with open(target, "r") as file:
-                lines = file.readlines()
-            lines[len(lines)-1] = tags_end_line
-            with open(target, "w") as file:
-                file.writelines(lines)
+        #TODO: Mover esto a repo imp
+#    def add_tags(self,target:str,tags:list):
+#        if len(tags)>0:
+#            tags_end_line = " ".join(map(str,[tag for tag in tags if not tag=="#noedit"]))
+#            with open(target, "r") as file:
+#                lines = file.readlines()
+#            lines[len(lines)-1] = tags_end_line
+ #           with open(target, "w") as file:
+ #               file.writelines(lines)
 
     def add_meta(self,target:str):
-        new_first_line = "# "+" ".join(map(str,title_words))
+       # new_first_line = "# "+" ".join(map(str,title_words))
         tags_end_line = " ".join(map(str,[tag for tag in tags if not tag=="#noedit"]))
         
         with open(target, "r") as file:
