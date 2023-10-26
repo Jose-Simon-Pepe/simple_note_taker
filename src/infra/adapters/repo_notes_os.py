@@ -50,7 +50,7 @@ class RepoNotesOs:
         exists:bool = False
         notes = self.get_all(path)
         for note in notes:
-            if note.note() == notes:
+            if note.note() == name:
                 exists = True
         return exists
         

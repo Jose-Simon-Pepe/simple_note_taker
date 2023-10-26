@@ -73,10 +73,10 @@ class TestNoteTaker:
     
     def test_note_should_never_be_repitted(self,nt):
         in_memo_repo = InMemoRepo()
-        in_memo_repo.exists_ = True
         nt.set_repo(in_memo_repo)
+        nt.create_note("hola")
         with pytest.raises(DuplicatedNoteError):
-            nt.create_note("hola")
+            in_memo_repo.exists_ = True
             nt.create_note("hola")
             assert len(in_memo_repo.get_all()) == 1
     
