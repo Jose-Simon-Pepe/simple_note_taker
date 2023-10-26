@@ -46,8 +46,14 @@ class RepoNotesOs:
         with open(target,mode='w') as note:
             note.writelines(lines)
 
-    def exists(self,name:str) -> bool:
-        pass
+    def exists(self,name:str,path:str) -> bool:
+        exists:bool = False
+        notes = self.get_all(path)
+        for note in notes:
+            if note.note() == notes:
+                exists = True
+        return exists
+        
 
     def update(id:int)-> bool:
         pass

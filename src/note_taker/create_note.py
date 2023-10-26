@@ -34,7 +34,7 @@ class NoteTaker:
 
 
     def _verify_unicity(self,name:str):
-        if self._repo.exists(name):
+        if self._repo.exists(name,self._notes_path):
             raise DuplicatedNoteError("Duplicated note")
 
     def create_note(self,name:str):
@@ -53,6 +53,7 @@ class NoteTaker:
         if self.editor != None:
             self.open_editor(target)
 
+    #TODO: Remove
     def _prevent_duplicated_notes(self,target:str):
         if os.path.isfile(target):
             raise DuplicatedNoteError()
