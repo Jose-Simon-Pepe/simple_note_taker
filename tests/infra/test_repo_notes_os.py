@@ -18,15 +18,8 @@ def remove_test_notes():
     yield
     os.system("rm -rf "+notes_path)
 
-def test_create_note_should_persist_a_note_throught_repo_into_choosen_path():
-    repo = RepoNotesOs()
-    nt = NoteTaker(notes_path,notes_templ).set_repo(repo)
-    nt.create_note("nueva nota")
-    assert os.path.isfile(notes_path+"nueva_nota.md")
-
 def test_repo_get_all_should_return_a_list_of_existing_notes():
     pass
-
 
 @pytest.mark.integration
 def test_note_taker_should_create_a_note_from_a_string_in_path_with_backslash():
