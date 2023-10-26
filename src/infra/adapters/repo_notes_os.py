@@ -19,14 +19,13 @@ class RepoNotesOs:
         pass
 
     def get_all(self,location_path:str)-> list:
-#        return [Note("this is an empty test note")]
         notes_list = list()
         for filename in os.listdir(location_path):
             with open(os.path.join(location_path, filename), "r") as f:
                 note_lines = f.readlines()
-                note = note_lines[0]
+                note = note_lines[0].split("# ")[1].removesuffix("\n")
                 id = int(note_lines[1].split("- ID: ")[1])
-                tags = note_lines[2]
+                tags = note_lines[2].removesuffix("\n").split(" ")[0:]
                 obtained_note = Note(note,tags).set_id(id)
                 print(obtained_note)
                 notes_list.append(obtained_note)

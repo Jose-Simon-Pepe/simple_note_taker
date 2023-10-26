@@ -34,17 +34,16 @@ def test_repo_should_create_a_note_from_template():
 
 
 
-#def test_repo_get_all_should_return_a_list_of_existing_notes():
-#    repo = RepoNotesOs()
-#    nt = NoteTaker(notes_path,notes_templ).set_repo(repo)
-#    note_name = "this is an empty test note"
-#    note_2_name = "this is an empty test note but 2"
-#    nt.create_note(note_name)
-#    nt.create_note(note_2_name)
-#    assert repo.get_all(notes_path)[0].note()==note_name
-#    assert repo.get_all(notes_path)[1].note()==note_2_name
+def test_repo_get_all_should_return_a_list_of_existing_notes():
+    repo = RepoNotesOs()
+    nt = NoteTaker(notes_path,notes_templ).set_repo(repo)
+    note_name = "this is an empty test note"
+    nt.create_note(note_name)
+    all = repo.get_all(notes_path)
+    assert all[0].note()==note_name
+    assert all[0].tags()==["#Untagged"]
 
-              #
+
 @pytest.mark.integration
 def test_note_taker_should_create_a_note_from_a_string_in_path_with_backslash():
     repo = RepoNotesOs()

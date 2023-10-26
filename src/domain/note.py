@@ -6,6 +6,7 @@ class Note:
         #ordenar atributos
         self._ordered_lines.append(note)
         self._ordered_lines.append("- ID: "+str(self._id))
+        self._tags = tags
         self._ordered_lines.append(tags)
 
     def set_id(self,id:int):
