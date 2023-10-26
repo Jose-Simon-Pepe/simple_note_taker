@@ -49,7 +49,7 @@ class NoteTaker:
         print("target is :",target)
         self._repo.create_from_templ(self._notes_templ,target)
         if self._repo!= None:
-            self._repo.save(Note("# "+" ".join(title_words)).set_tags(self._tags))
+            self._repo.save(Note("# "+" ".join(title_words)).set_tags(self._tags),target)
         if self.editor != None:
             self.open_editor(target)
 

@@ -8,6 +8,10 @@ class Note:
         self._ordered_lines.append("- ID: "+str(self._id))
         self._ordered_lines.append(tags)
 
+    def set_id(self,id:int):
+        self._id = id
+        return self
+
     def ordered_lines(self) -> list:
         return self._ordered_lines
     
