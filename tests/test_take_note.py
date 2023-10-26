@@ -1,6 +1,6 @@
 import pytest
-from simple_note_taker.src.infra.ports.repo_notes import RepoNotes
-from simple_note_taker.src.domain.note import Note
+from simple_note_taker.tests.helpers.in_memo_repo import InMemoRepo
+from simple_note_taker.tests.helpers.dommie_repo import DommieRepo
 from simple_note_taker.tests.helpers.spy_editor import Editor
 from simple_note_taker.src.note_taker.create_note import NoteTaker, DuplicatedNoteError
 
@@ -20,39 +20,6 @@ def nt():
     return NoteTaker(notes_path, notes_templ)
 
 
-class InMemoRepo():
-
-    def __init__(self):
-        self._all = list()
-        self.exists_ = False
-
-    def save(self,note_dto,path:str):
-        self._all.append(note_dto)
-
-    def create_from_templ(self,template,target):
-        pass
-
-    def get_all(self):
-        return self._all
-
-    def exists(self,name:str,path:str) -> bool:
-        return self.exists_
-
-class DommieRepo(RepoNotes):
-    def get(id:int)-> Note:  
-        pass
-    def get(name:str)-> list:
-        pass
-    def get_all()-> list:
-        pass
-    def save(self,note_dto,path:str)-> bool:
-        pass
-    def update(id:int)-> bool:
-        pass
-    def create_from_templ(self,templ,targ):
-        pass
-    def exists(self,name:str,path:str) -> bool:
-        return False
 
      
 
@@ -70,7 +37,7 @@ class TestNoteTaker:
         nt.set_repo(repo)
         nt.create_note(note_name)
         assert repo.get_all()[0].tags()==["#this_is_a_tag"]
-        
+       
     @pytest.mark.integration
     def test_note_taker_should_open_editor_for_edit_note(self,nt):
         nt.set_repo(DommieRepo())
