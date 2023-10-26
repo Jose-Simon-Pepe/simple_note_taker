@@ -26,7 +26,7 @@ class InMemoRepo():
         self._all = list()
         self.exists_ = False
 
-    def save(self,note_dto):
+    def save(self,note_dto,path:str):
         self._all.append(note_dto)
 
     def create_from_templ(self,template,target):
@@ -35,7 +35,7 @@ class InMemoRepo():
     def get_all(self):
         return self._all
 
-    def exists(self,name:str) -> bool:
+    def exists(self,name:str,path:str) -> bool:
         return self.exists_
 
 class DommieRepo(RepoNotes):
@@ -45,13 +45,13 @@ class DommieRepo(RepoNotes):
         pass
     def get_all()-> list:
         pass
-    def save(self,note_dto)-> bool:
+    def save(self,note_dto,path:str)-> bool:
         pass
     def update(id:int)-> bool:
         pass
     def create_from_templ(self,templ,targ):
         pass
-    def exists(self,name:str) -> bool:
+    def exists(self,name:str,path:str) -> bool:
         return False
 
      
